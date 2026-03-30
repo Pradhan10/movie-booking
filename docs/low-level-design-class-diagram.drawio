@@ -1,0 +1,433 @@
+<mxfile host="app.diagrams.net" modified="2026-03-28T00:00:00.000Z" agent="5.0" version="21.0.0" etag="lld-class-diagram">
+  <diagram name="Low Level Design - Class Diagram" id="lld">
+    <mxGraphModel dx="2400" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2600" pageHeight="1800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="Low Level Design - Class Diagram (Catalog &amp; Booking Services)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="700" y="20" width="1200" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- ===== CATALOG SERVICE ===== -->
+        <mxCell id="catalog-boundary" value="CATALOG SERVICE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontStyle=1;verticalAlign=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="1200" height="700" as="geometry" />
+        </mxCell>
+        
+        <!-- Controller Layer -->
+        <mxCell id="catalog-controller" value="«Controller»&#xa;ShowCatalogController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="120" y="150" width="320" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog-controller-fields" value="- catalogService: ShowCatalogService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="catalog-controller">
+          <mxGeometry y="40" width="320" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog-controller-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="catalog-controller">
+          <mxGeometry y="66" width="320" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog-controller-methods" value="+ getShowsByMovie(movieId, date): List&lt;ShowDTO&gt;&#xa;+ getShowsByTheatre(theatreId, date): List&lt;ShowDTO&gt;&#xa;+ getShowDetails(showId): ShowDetailsDTO&#xa;+ searchShows(filter: SearchFilter): PagedResult&#xa;+ getApplicableOffers(city, theatre): List&lt;OfferDTO&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="catalog-controller">
+          <mxGeometry y="74" width="320" height="126" as="geometry" />
+        </mxCell>
+        
+        <!-- Service Layer -->
+        <mxCell id="catalog-service-class" value="«Service»&#xa;ShowCatalogService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="120" y="390" width="340" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog-service-fields" value="- showRepository: ShowRepository&#xa;- theatreRepository: TheatreRepository&#xa;- movieRepository: MovieRepository&#xa;- offerRepository: OfferRepository&#xa;- cacheService: RedisCacheService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="catalog-service-class">
+          <mxGeometry y="40" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog-service-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="catalog-service-class">
+          <mxGeometry y="120" width="340" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog-service-methods" value="+ findShowsByMovie(movieId, date, city): List&lt;Show&gt;&#xa;+ findShowsByTheatre(theatreId, date): List&lt;Show&gt;&#xa;+ getShowDetails(showId): ShowDetails&#xa;+ searchShows(criteria): PagedResult&lt;Show&gt;&#xa;+ getApplicableOffers(showId, ticketCount): List&lt;Offer&gt;&#xa;- applyCacheIfAvailable(key): Optional&lt;T&gt;&#xa;- updateCache(key, value, ttl): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="catalog-service-class">
+          <mxGeometry y="128" width="340" height="112" as="geometry" />
+        </mxCell>
+        
+        <!-- Repository Layer -->
+        <mxCell id="show-repo" value="«Repository»&#xa;ShowRepository" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="520" y="150" width="320" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="show-repo-methods" value="+ findByMovieIdAndDate(movieId, date): List&lt;Show&gt;&#xa;+ findByTheatreIdAndDate(theatreId, date): List&lt;Show&gt;&#xa;+ findById(id): Optional&lt;Show&gt;&#xa;+ findAvailableShows(filter): List&lt;Show&gt;&#xa;+ save(show): Show&#xa;+ updateAvailableSeats(showId, count): int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="show-repo">
+          <mxGeometry y="40" width="320" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Cache Service -->
+        <mxCell id="cache-service" value="«Service»&#xa;RedisCacheService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="520" y="330" width="320" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-service-fields" value="- redisTemplate: RedisTemplate&lt;String, Object&gt;&#xa;- defaultTTL: Duration = 5 minutes" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="cache-service">
+          <mxGeometry y="40" width="320" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-service-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="cache-service">
+          <mxGeometry y="80" width="320" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="cache-service-methods" value="+ get(key: String): Optional&lt;T&gt;&#xa;+ set(key: String, value: T, ttl: Duration): void&#xa;+ delete(key: String): void&#xa;+ exists(key: String): boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="cache-service">
+          <mxGeometry y="88" width="320" height="72" as="geometry" />
+        </mxCell>
+        
+        <!-- Domain Models -->
+        <mxCell id="show-entity" value="«Entity»&#xa;Show" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="900" y="150" width="280" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="show-entity-fields" value="- id: Long&#xa;- movieId: Long&#xa;- theatreId: Long&#xa;- screenId: Long&#xa;- showDate: LocalDate&#xa;- showTime: LocalTime&#xa;- basePrice: BigDecimal&#xa;- availableSeats: Integer&#xa;- status: ShowStatus (ENUM)&#xa;- version: Integer&#xa;- createdAt: Timestamp&#xa;- updatedAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="show-entity">
+          <mxGeometry y="40" width="280" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="show-entity-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="show-entity">
+          <mxGeometry y="220" width="280" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="show-entity-methods" value="+ isAvailable(): boolean&#xa;+ decrementSeats(count): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="show-entity">
+          <mxGeometry y="228" width="280" height="32" as="geometry" />
+        </mxCell>
+        
+        <!-- ===== BOOKING SERVICE ===== -->
+        <mxCell id="booking-boundary" value="BOOKING SERVICE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontStyle=1;verticalAlign=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="80" y="840" width="1200" height="880" as="geometry" />
+        </mxCell>
+        
+        <!-- Booking Controller -->
+        <mxCell id="booking-controller" value="«Controller»&#xa;BookingController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="120" y="890" width="380" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-controller-fields" value="- bookingService: BookingService&#xa;- paymentService: PaymentService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="booking-controller">
+          <mxGeometry y="40" width="380" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-controller-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="booking-controller">
+          <mxGeometry y="80" width="380" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-controller-methods" value="+ checkSeatAvailability(showId, seatIds): SeatAvailabilityDTO&#xa;+ holdSeats(request: HoldSeatsRequest): HoldSeatsResponse&#xa;+ createBooking(request: BookingRequest): BookingResponse&#xa;+ confirmBooking(bookingId, paymentId): BookingDTO&#xa;+ cancelBooking(bookingId): void&#xa;+ getBookingDetails(bookingId): BookingDetailsDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="booking-controller">
+          <mxGeometry y="88" width="380" height="112" as="geometry" />
+        </mxCell>
+        
+        <!-- Booking Service -->
+        <mxCell id="booking-service-class" value="«Service»&#xa;BookingService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="120" y="1140" width="420" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-service-fields" value="- bookingRepository: BookingRepository&#xa;- seatRepository: SeatRepository&#xa;- seatLockService: SeatLockService&#xa;- offerService: OfferService&#xa;- eventPublisher: EventPublisher&#xa;- transactionManager: TransactionManager" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="booking-service-class">
+          <mxGeometry y="40" width="420" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-service-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="booking-service-class">
+          <mxGeometry y="140" width="420" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-service-methods" value="+ checkSeatAvailability(showId, seatIds): Map&lt;Long, Boolean&gt;&#xa;+ holdSeats(sessionId, showId, seatIds, userId): HoldResult&#xa;+ createBooking(userId, showId, seatIds): Booking&#xa;+ confirmBooking(bookingId, paymentId): Booking&#xa;+ cancelBooking(bookingId, reason): void&#xa;- calculateTotalAmount(seats, offers): BigDecimal&#xa;- validateSeatsAvailable(seatIds): void&#xa;- acquireSeatLocks(seatIds): boolean&#xa;- releaseSeatLocks(seatIds): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="booking-service-class">
+          <mxGeometry y="148" width="420" height="152" as="geometry" />
+        </mxCell>
+        
+        <!-- Seat Lock Service -->
+        <mxCell id="seat-lock-service" value="«Service»&#xa;SeatLockService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="600" y="890" width="380" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-lock-fields" value="- redisTemplate: RedisTemplate&#xa;- lockTTL: Duration = 30 seconds&#xa;- holdTTL: Duration = 10 minutes" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="seat-lock-service">
+          <mxGeometry y="40" width="380" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-lock-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="seat-lock-service">
+          <mxGeometry y="90" width="380" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-lock-methods" value="+ acquireLock(seatId, txnId): boolean&#xa;+ releaseLock(seatId, txnId): void&#xa;+ holdSeats(sessionId, seatIds, userId, expiresAt): void&#xa;+ releaseHold(sessionId): void&#xa;+ getHeldSeats(sessionId): Set&lt;Long&gt;&#xa;+ isHeldBySession(seatId, sessionId): boolean&#xa;- generateLockKey(seatId): String&#xa;- generateHoldKey(sessionId): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="seat-lock-service">
+          <mxGeometry y="98" width="380" height="122" as="geometry" />
+        </mxCell>
+        
+        <!-- Offer Service -->
+        <mxCell id="offer-service-class" value="«Service»&#xa;OfferService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1160" width="380" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="offer-service-fields" value="- offerRepository: OfferRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="offer-service-class">
+          <mxGeometry y="40" width="380" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="offer-service-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="offer-service-class">
+          <mxGeometry y="66" width="380" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="offer-service-methods" value="+ getApplicableOffers(show, city, theatre): List&lt;Offer&gt;&#xa;+ calculateDiscount(offer, seats): BigDecimal&#xa;+ applyThirdTicketDiscount(seats): BigDecimal&#xa;+ applyAfternoonDiscount(show, seats): BigDecimal&#xa;- isAfternoonShow(showTime): boolean&#xa;- validateOfferConditions(offer, context): boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="offer-service-class">
+          <mxGeometry y="74" width="380" height="126" as="geometry" />
+        </mxCell>
+        
+        <!-- Booking Entity -->
+        <mxCell id="booking-entity" value="«Entity»&#xa;Booking" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="120" y="1490" width="300" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-entity-fields" value="- id: Long&#xa;- bookingReference: String&#xa;- userId: Long&#xa;- showId: Long&#xa;- totalAmount: BigDecimal&#xa;- discountAmount: BigDecimal&#xa;- finalAmount: BigDecimal&#xa;- status: BookingStatus (ENUM)&#xa;- paymentId: Long&#xa;- seats: List&lt;BookingSeat&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="booking-entity">
+          <mxGeometry y="40" width="300" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-entity-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="booking-entity">
+          <mxGeometry y="180" width="300" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-entity-methods" value="+ confirm(): void&#xa;+ cancel(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="booking-entity">
+          <mxGeometry y="188" width="300" height="12" as="geometry" />
+        </mxCell>
+        
+        <!-- Seat Entity -->
+        <mxCell id="seat-entity" value="«Entity»&#xa;Seat" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1490" width="280" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-entity-fields" value="- id: Long&#xa;- showId: Long&#xa;- seatNumber: String&#xa;- rowLabel: String&#xa;- category: SeatCategory (ENUM)&#xa;- status: SeatStatus (ENUM)&#xa;- version: Integer&#xa;- heldUntil: Timestamp&#xa;- updatedAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="seat-entity">
+          <mxGeometry y="40" width="280" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-entity-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="seat-entity">
+          <mxGeometry y="180" width="280" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-entity-methods" value="+ hold(until): void&#xa;+ book(): void&#xa;+ release(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="seat-entity">
+          <mxGeometry y="188" width="280" height="12" as="geometry" />
+        </mxCell>
+        
+        <!-- Payment Service -->
+        <mxCell id="payment-service-class" value="«Service»&#xa;PaymentService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="820" y="1490" width="400" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-service-fields" value="- paymentRepository: PaymentRepository&#xa;- paymentGateway: PaymentGatewayClient&#xa;- eventPublisher: EventPublisher" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="payment-service-class">
+          <mxGeometry y="40" width="400" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-service-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="payment-service-class">
+          <mxGeometry y="90" width="400" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-service-methods" value="+ initiatePayment(bookingId, amount): PaymentResponse&#xa;+ processPayment(paymentId, details): PaymentResult&#xa;+ handleWebhook(gatewayResponse): void&#xa;+ refundPayment(paymentId): RefundResult&#xa;- validatePaymentDetails(details): void&#xa;- publishPaymentEvent(payment, status): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="payment-service-class">
+          <mxGeometry y="98" width="400" height="102" as="geometry" />
+        </mxCell>
+        
+        <!-- Repositories -->
+        <mxCell id="booking-repo" value="«Repository»&#xa;BookingRepository" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1160" width="340" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-repo-methods" value="+ save(booking): Booking&#xa;+ findById(id): Optional&lt;Booking&gt;&#xa;+ findByReference(ref): Optional&lt;Booking&gt;&#xa;+ findByUserId(userId): List&lt;Booking&gt;&#xa;+ updateStatus(id, status): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="booking-repo">
+          <mxGeometry y="40" width="340" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Seat Repository -->
+        <mxCell id="seat-repo" value="«Repository»&#xa;SeatRepository" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1320" width="380" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-repo-methods" value="+ findByShowIdAndStatus(showId, status): List&lt;Seat&gt;&#xa;+ findByIdsForUpdate(seatIds): List&lt;Seat&gt;  // Pessimistic lock&#xa;+ updateStatusOptimistic(id, status, version): int&#xa;+ updateStatusBatch(seatIds, status): int&#xa;+ findExpiredHolds(): List&lt;Seat&gt;&#xa;+ releaseExpiredHolds(): int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="seat-repo">
+          <mxGeometry y="40" width="380" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Event Publisher -->
+        <mxCell id="event-publisher" value="«Component»&#xa;EventPublisher" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="890" width="380" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="event-publisher-fields" value="- rabbitTemplate: RabbitTemplate&#xa;- kafkaTemplate: KafkaTemplate" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="event-publisher">
+          <mxGeometry y="40" width="380" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="event-publisher-separator" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="event-publisher">
+          <mxGeometry y="80" width="380" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="event-publisher-methods" value="+ publishBookingConfirmed(booking): void&#xa;+ publishBookingCancelled(booking): void&#xa;+ publishPaymentSuccess(payment): void&#xa;+ publishPaymentFailed(payment): void&#xa;+ publishShowUpdated(show): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" vertex="1" parent="event-publisher">
+          <mxGeometry y="88" width="380" height="72" as="geometry" />
+        </mxCell>
+        
+        <!-- DTOs -->
+        <mxCell id="dto-box" value="DATA TRANSFER OBJECTS (DTOs)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1;verticalAlign=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="100" width="1180" height="700" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="booking-request-dto" value="BookingRequest" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffffff;strokeColor=#666666;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="150" width="240" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-request-fields" value="+ userId: Long&#xa;+ showId: Long&#xa;+ seatIds: List&lt;Long&gt;&#xa;+ sessionId: String&#xa;+ offerCode: String&#xa;+ contactEmail: String&#xa;+ contactPhone: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="booking-request-dto">
+          <mxGeometry y="26" width="240" height="114" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="booking-response-dto" value="BookingResponse" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffffff;strokeColor=#666666;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="150" width="260" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-response-fields" value="+ bookingId: Long&#xa;+ bookingReference: String&#xa;+ status: String&#xa;+ totalAmount: BigDecimal&#xa;+ finalAmount: BigDecimal&#xa;+ seats: List&lt;SeatDTO&gt;&#xa;+ paymentUrl: String&#xa;+ expiresAt: Timestamp&#xa;+ qrCode: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="booking-response-dto">
+          <mxGeometry y="26" width="260" height="134" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="show-dto" value="ShowDTO" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffffff;strokeColor=#666666;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="150" width="240" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="show-dto-fields" value="+ showId: Long&#xa;+ movieTitle: String&#xa;+ theatreName: String&#xa;+ screenName: String&#xa;+ showDate: String&#xa;+ showTime: String&#xa;+ availableSeats: Integer&#xa;+ basePrice: BigDecimal&#xa;+ language: String&#xa;+ genre: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="show-dto">
+          <mxGeometry y="26" width="240" height="154" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="seat-dto" value="SeatDTO" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffffff;strokeColor=#666666;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2240" y="150" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-dto-fields" value="+ seatId: Long&#xa;+ seatNumber: String&#xa;+ row: String&#xa;+ category: String&#xa;+ price: BigDecimal&#xa;+ status: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="seat-dto">
+          <mxGeometry y="26" width="220" height="94" as="geometry" />
+        </mxCell>
+        
+        <!-- Enums -->
+        <mxCell id="enum-box" value="ENUMERATIONS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1340" y="360" width="1180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="booking-status-enum" value="«Enumeration»&#xa;BookingStatus" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="410" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="booking-status-values" value="PENDING&#xa;CONFIRMED&#xa;CANCELLED&#xa;REFUNDED" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="booking-status-enum">
+          <mxGeometry y="40" width="180" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="seat-status-enum" value="«Enumeration»&#xa;SeatStatus" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1600" y="410" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-status-values" value="AVAILABLE&#xa;HELD&#xa;BOOKED&#xa;BLOCKED" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="seat-status-enum">
+          <mxGeometry y="40" width="180" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="payment-status-enum" value="«Enumeration»&#xa;PaymentStatus" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1820" y="410" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-status-values" value="INITIATED&#xa;SUCCESS&#xa;FAILED&#xa;REFUNDED" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="payment-status-enum">
+          <mxGeometry y="40" width="180" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="show-status-enum" value="«Enumeration»&#xa;ShowStatus" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2040" y="410" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="show-status-values" value="ACTIVE&#xa;CANCELLED&#xa;COMPLETED" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="show-status-enum">
+          <mxGeometry y="40" width="180" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="seat-category-enum" value="«Enumeration»&#xa;SeatCategory" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2260" y="410" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="seat-category-values" value="PREMIUM&#xa;NORMAL&#xa;VIP" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="seat-category-enum">
+          <mxGeometry y="40" width="180" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Design Patterns Box -->
+        <mxCell id="patterns-box" value="DESIGN PATTERNS APPLIED" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1340" y="540" width="1180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pattern1" value="1. Repository Pattern&#xa;   Abstracts data access logic&#xa;   Easy to mock for testing" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="580" width="260" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pattern2" value="2. Service Layer Pattern&#xa;   Business logic encapsulation&#xa;   Transaction boundaries" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1680" y="580" width="240" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pattern3" value="3. DTO Pattern&#xa;   Decouples API from domain&#xa;   Version API independently" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="580" width="240" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pattern4" value="4. Saga Pattern&#xa;   Distributed transactions&#xa;   Booking → Payment → Notification" style="text;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2240" y="580" width="240" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pattern5" value="5. Event-Driven Architecture&#xa;   Async communication&#xa;   Loose coupling between services" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="670" width="260" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pattern6" value="6. Optimistic Locking&#xa;   Version-based concurrency control&#xa;   Prevents lost updates" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1680" y="670" width="240" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pattern7" value="7. Cache-Aside Pattern&#xa;   Check cache → Miss → DB → Update cache&#xa;   Reduces DB load" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="670" width="240" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pattern8" value="8. Strategy Pattern&#xa;   Offer calculation strategies&#xa;   Different discount types" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2240" y="670" width="240" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Relationships -->
+        <mxCell id="rel1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=diamondThin;endFill=1;endSize=12;" edge="1" parent="1" source="catalog-controller" target="catalog-service-class">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rel2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=diamondThin;endFill=1;endSize=12;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="catalog-service-class" target="show-repo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rel3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=diamondThin;endFill=1;endSize=12;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="catalog-service-class" target="cache-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rel4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=diamondThin;endFill=1;endSize=12;" edge="1" parent="1" source="booking-controller" target="booking-service-class">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rel5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=diamondThin;endFill=1;endSize=12;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="booking-service-class" target="seat-lock-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rel6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=diamondThin;endFill=1;endSize=12;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="booking-service-class" target="booking-repo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rel7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=diamondThin;endFill=1;endSize=12;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="booking-service-class" target="seat-repo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rel8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=diamondThin;endFill=1;endSize=12;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="booking-controller" target="payment-service-class">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Exception Hierarchy -->
+        <mxCell id="exception-box" value="EXCEPTION HIERARCHY" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1340" y="840" width="1180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="base-exception" value="«Exception»&#xa;BookingException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1700" y="890" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="base-exception-fields" value="- errorCode: String&#xa;- message: String&#xa;- timestamp: Instant" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=9;" vertex="1" parent="base-exception">
+          <mxGeometry y="40" width="240" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="seat-unavailable-ex" value="SeatUnavailableException" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="1030" width="160" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="payment-failed-ex" value="PaymentFailedException" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1620" y="1030" width="160" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="lock-timeout-ex" value="LockAcquisitionException" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1820" y="1030" width="160" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="hold-expired-ex" value="HoldExpiredException" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="2020" y="1030" width="160" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Exception relationships -->
+        <mxCell id="ex-rel1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=block;endFill=0;dashed=1;" edge="1" parent="1" source="seat-unavailable-ex" target="base-exception">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ex-rel2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=block;endFill=0;dashed=1;" edge="1" parent="1" source="payment-failed-ex" target="base-exception">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ex-rel3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=block;endFill=0;dashed=1;" edge="1" parent="1" source="lock-timeout-ex" target="base-exception">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ex-rel4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;endArrow=block;endFill=0;dashed=1;" edge="1" parent="1" source="hold-expired-ex" target="base-exception">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Sequence Diagram Reference -->
+        <mxCell id="sequence-note" value="BOOKING FLOW SEQUENCE" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1340" y="1120" width="1180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="sequence-diagram" value="1. Client → BookingController.holdSeats()&#xa;2. BookingController → BookingService.holdSeats()&#xa;3. BookingService → SeatRepository.findByIdsForUpdate() [Pessimistic Lock]&#xa;4. BookingService → Validate seats AVAILABLE&#xa;5. BookingService → SeatLockService.acquireLock() [Redis SETNX]&#xa;6. BookingService → SeatRepository.updateStatus(HELD, version++) [Optimistic Lock]&#xa;7. BookingService → SeatLockService.holdSeats(TTL=10min)&#xa;8. Return HoldSeatsResponse&#xa;&#xa;9. Client → BookingController.createBooking()&#xa;10. BookingController → BookingService.createBooking()&#xa;11. BookingService → Validate hold not expired&#xa;12. BookingService → OfferService.calculateDiscount()&#xa;13. BookingService → BookingRepository.save() [START TRANSACTION]&#xa;14. BookingService → SeatRepository.updateStatus(HELD) [Keep held]&#xa;15. BookingService → Return Booking with payment URL [COMMIT]&#xa;&#xa;16. Client redirects to Payment Gateway&#xa;17. Payment Gateway → PaymentService.handleWebhook()&#xa;18. PaymentService → Validate signature&#xa;19. PaymentService → BookingService.confirmBooking() [If SUCCESS]&#xa;20. BookingService → SeatRepository.updateStatus(BOOKED) [TRANSACTION]&#xa;21. BookingService → SeatLockService.releaseHold()&#xa;22. BookingService → EventPublisher.publishBookingConfirmed()&#xa;23. NotificationService (async) ← Listens to event&#xa;24. NotificationService → Send email/SMS&#xa;25. If notification fails: Log and retry (max 3 attempts)" style="text;html=1;strokeColor=#666666;fillColor=#ffffff;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=9;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="1160" width="1100" height="420" as="geometry" />
+        </mxCell>
+        
+        <!-- API Contracts -->
+        <mxCell id="api-box" value="API CONTRACTS (RESTful)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1340" y="1610" width="1180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="api-catalog" value="CATALOG SERVICE APIs&#xa;&#xa;GET  /api/v1/shows?movieId={id}&amp;date={date}&amp;city={city}&#xa;GET  /api/v1/shows/theatre/{theatreId}?date={date}&#xa;GET  /api/v1/shows/{showId}&#xa;GET  /api/v1/offers?city={city}&amp;theatreId={id}" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=9;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="1650" width="540" height="90" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="api-booking" value="BOOKING SERVICE APIs&#xa;&#xa;POST /api/v1/bookings/hold        # Hold seats&#xa;POST /api/v1/bookings              # Create booking&#xa;POST /api/v1/bookings/{id}/confirm # Confirm after payment&#xa;POST /api/v1/bookings/{id}/cancel  # Cancel booking&#xa;GET  /api/v1/bookings/{id}          # Get details&#xa;GET  /api/v1/bookings/user/{userId} # User's bookings" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=9;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="1650" width="520" height="130" as="geometry" />
+        </mxCell>
+        
+        <!-- Arrows from controller to service -->
+        <mxCell id="arrow-cat-ctrl-svc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#666666;dashed=1;startArrow=none;startFill=0;endArrow=open;endFill=0;" edge="1" parent="1" source="catalog-controller-fields" target="catalog-service-class">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

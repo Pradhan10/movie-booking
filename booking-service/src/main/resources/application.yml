@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: booking-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/moviebooking
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 10
+      connection-timeout: 30000
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+  
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 5
+  
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8082
+  servlet:
+    context-path: /api/v1
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+logging:
+  level:
+    com.moviebooking.booking: DEBUG
+    org.hibernate.SQL: DEBUG
+
+booking:
+  seat-hold:
+    ttl-minutes: 10
+    lock-timeout-seconds: 30
+  payment:
+    gateway-url: https://api.razorpay.com
+    webhook-secret: mock_secret_key
