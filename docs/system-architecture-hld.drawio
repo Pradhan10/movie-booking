@@ -5,12 +5,10 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
-        <!-- Title -->
         <mxCell id="title" value="Movie Ticket Booking Platform - High Level Design (HLD)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=26;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="600" y="20" width="1000" height="50" as="geometry" />
         </mxCell>
         
-        <!-- Client Layer -->
         <mxCell id="client-layer" value="CLIENT LAYER" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="100" y="100" width="2000" height="120" as="geometry" />
         </mxCell>
@@ -31,7 +29,6 @@
           <mxGeometry x="820" y="140" width="180" height="60" as="geometry" />
         </mxCell>
         
-        <!-- API Gateway Layer -->
         <mxCell id="gateway-layer" value="API GATEWAY LAYER" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="100" y="260" width="2000" height="140" as="geometry" />
         </mxCell>
@@ -44,52 +41,42 @@
           <mxGeometry x="550" y="290" width="200" height="90" as="geometry" />
         </mxCell>
         
-        <!-- Microservices Layer -->
         <mxCell id="services-layer" value="MICROSERVICES LAYER" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=14;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="100" y="440" width="2000" height="320" as="geometry" />
         </mxCell>
         
-        <!-- Service 1: Catalog Service -->
         <mxCell id="catalog-service" value="📚 Catalog Service&#xa;(Show Catalog &amp; Browse)&#xa;&#xa;• Browse movies&#xa;• Search theatres&#xa;• Show timings&#xa;• Filter by city/language&#xa;&#xa;Tech: Spring Boot&#xa;Cache: Redis" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="150" y="480" width="180" height="150" as="geometry" />
         </mxCell>
         
-        <!-- Service 2: Booking Service -->
         <mxCell id="booking-service" value="🎫 Booking Service&#xa;&#xa;• Seat selection&#xa;• Hold seats (Redis)&#xa;• Create booking&#xa;• Apply offers&#xa;• Optimistic locking&#xa;&#xa;Tech: Spring Boot&#xa;Pattern: Saga" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="360" y="480" width="180" height="150" as="geometry" />
         </mxCell>
         
-        <!-- Service 3: Payment Service -->
         <mxCell id="payment-service" value="💳 Payment Service&#xa;&#xa;• Gateway integration&#xa;• Process payment&#xa;• Refund handling&#xa;• Webhook receiver&#xa;&#xa;Tech: Spring Boot&#xa;Gateway: Razorpay" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="570" y="480" width="180" height="150" as="geometry" />
         </mxCell>
         
-        <!-- Service 4: Notification Service -->
         <mxCell id="notification-service" value="📧 Notification Service&#xa;&#xa;• Email (SMTP)&#xa;• SMS (Twilio)&#xa;• Push notifications&#xa;• Retry mechanism&#xa;&#xa;Tech: Spring Boot&#xa;Queue: RabbitMQ" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="780" y="480" width="180" height="150" as="geometry" />
         </mxCell>
         
-        <!-- Service 5: Theatre Management Service -->
         <mxCell id="theatre-service" value="🏢 Theatre Management&#xa;&#xa;• Partner onboarding&#xa;• Theatre CRUD&#xa;• Show CRUD&#xa;• Inventory management&#xa;&#xa;Tech: Spring Boot" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="990" y="480" width="190" height="150" as="geometry" />
         </mxCell>
         
-        <!-- Service 6: User Service -->
         <mxCell id="user-service" value="👤 User Service&#xa;&#xa;• Registration&#xa;• Authentication&#xa;• Profile management&#xa;• Preferences&#xa;&#xa;Tech: Spring Boot&#xa;Auth: JWT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="1210" y="480" width="170" height="150" as="geometry" />
         </mxCell>
         
-        <!-- Service 7: Analytics Service -->
         <mxCell id="analytics-service" value="📊 Analytics Service&#xa;&#xa;• Revenue reports&#xa;• Booking trends&#xa;• Partner commission&#xa;• Platform KPIs&#xa;&#xa;Tech: Spring Boot&#xa;Warehouse: BigQuery" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="1410" y="480" width="180" height="150" as="geometry" />
         </mxCell>
         
-        <!-- Service 8: Search Service -->
         <mxCell id="search-service" value="🔍 Search Service&#xa;&#xa;• Full-text search&#xa;• Fuzzy matching&#xa;• Autocomplete&#xa;• Filters&#xa;&#xa;Tech: Elasticsearch" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="1620" y="480" width="170" height="150" as="geometry" />
         </mxCell>
         
-        <!-- Message Queue Layer -->
         <mxCell id="queue-layer" value="EVENT BUS / MESSAGE QUEUE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="100" y="800" width="2000" height="100" as="geometry" />
         </mxCell>
@@ -102,7 +89,6 @@
           <mxGeometry x="950" y="840" width="140" height="35" as="geometry" />
         </mxCell>
         
-        <!-- Data Layer -->
         <mxCell id="data-layer" value="DATA LAYER" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="100" y="940" width="2000" height="180" as="geometry" />
         </mxCell>
@@ -127,7 +113,6 @@
           <mxGeometry x="1200" y="980" width="220" height="100" as="geometry" />
         </mxCell>
         
-        <!-- External Services -->
         <mxCell id="external-layer" value="EXTERNAL SERVICES" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="100" y="1160" width="2000" height="120" as="geometry" />
         </mxCell>
@@ -148,7 +133,6 @@
           <mxGeometry x="910" y="1200" width="180" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Monitoring Layer -->
         <mxCell id="monitoring-box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="1550" y="100" width="520" height="1180" as="geometry" />
         </mxCell>
@@ -209,7 +193,6 @@
           <mxGeometry x="1580" y="1140" width="460" height="120" as="geometry" />
         </mxCell>
         
-        <!-- Arrows from services to data layer -->
         <mxCell id="arr-catalog-pg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#666666;dashed=1;" edge="1" parent="1" source="catalog-service" target="postgres">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -234,7 +217,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Service to Queue connections -->
         <mxCell id="arr-booking-queue" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#FF9900;dashed=1;" edge="1" parent="1" source="booking-service" target="event-bus">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -247,7 +229,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Gateway to Services -->
         <mxCell id="arr-gw-catalog" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#0066CC;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="load-balancer" target="catalog-service">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -260,7 +241,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Clients to Gateway -->
         <mxCell id="arr-web-gw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#333333;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="web-app" target="api-gateway">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -273,7 +253,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Payment to External Gateway -->
         <mxCell id="arr-pay-external" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#CC0000;" edge="1" parent="1" source="payment-service" target="payment-gateway">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
@@ -283,7 +262,6 @@
           </mxGeometry>
         </mxCell>
         
-        <!-- Notification to External Services -->
         <mxCell id="arr-notif-email" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#9900CC;" edge="1" parent="1" source="notification-service" target="email-service">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
@@ -302,12 +280,10 @@
           </mxGeometry>
         </mxCell>
         
-        <!-- API Gateway to Load Balancer -->
         <mxCell id="arr-gw-lb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#333333;" edge="1" parent="1" source="api-gateway" target="load-balancer">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Legend -->
         <mxCell id="legend-hld" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
           <mxGeometry x="100" y="480" width="200" height="260" as="geometry" />
         </mxCell>

@@ -5,27 +5,22 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
-        <!-- Title -->
         <mxCell id="title" value="Theatre Partner Journey: Show &amp; Inventory Management" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="400" y="20" width="600" height="40" as="geometry" />
         </mxCell>
         
-        <!-- Start -->
         <mxCell id="start" value="Theatre Partner Login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="600" y="80" width="200" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Dashboard -->
         <mxCell id="dashboard" value="Partner Dashboard" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1">
           <mxGeometry x="600" y="180" width="200" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Choose Action -->
         <mxCell id="choose-action" value="Select Action" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1">
           <mxGeometry x="620" y="280" width="160" height="80" as="geometry" />
         </mxCell>
         
-        <!-- Path 1: Create Show -->
         <mxCell id="create-show" value="CREATE SHOW" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="280" y="400" width="180" height="50" as="geometry" />
         </mxCell>
@@ -54,7 +49,6 @@
           <mxGeometry x="100" y="790" width="140" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Path 2: Update Show -->
         <mxCell id="update-show" value="UPDATE SHOW" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="610" y="400" width="180" height="50" as="geometry" />
         </mxCell>
@@ -83,7 +77,6 @@
           <mxGeometry x="630" y="850" width="140" height="40" as="geometry" />
         </mxCell>
         
-        <!-- Path 3: Delete Show -->
         <mxCell id="delete-show" value="DELETE SHOW" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="940" y="400" width="180" height="50" as="geometry" />
         </mxCell>
@@ -120,7 +113,6 @@
           <mxGeometry x="1140" y="745" width="120" height="40" as="geometry" />
         </mxCell>
         
-        <!-- Arrows -->
         <mxCell id="arr1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="start" target="dashboard">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -141,7 +133,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Create Flow Arrows -->
         <mxCell id="arr6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="create-show" target="create-form">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -166,7 +157,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Update Flow Arrows -->
         <mxCell id="arr12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="update-show" target="select-show-update">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -199,7 +189,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Delete Flow Arrows -->
         <mxCell id="arr19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="delete-show" target="select-show-delete">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -232,7 +221,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
-        <!-- Legend -->
         <mxCell id="legend-box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
           <mxGeometry x="50" y="80" width="180" height="200" as="geometry" />
         </mxCell>
