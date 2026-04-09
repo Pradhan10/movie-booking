@@ -5,9 +5,9 @@ services:
     image: postgres:15-alpine
     container_name: moviebooking-postgres
     environment:
-      POSTGRES_DB: moviebooking
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${DB_NAME:-moviebooking}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
     ports:
       - "5432:5432"
     volumes:
@@ -15,7 +15,7 @@ services:
       - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./seed-data.sql:/docker-entrypoint-initdb.d/02-seed-data.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,13 +23,13 @@ services:
   redis:
     image: redis:7-alpine
     container_name: moviebooking-redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-changeme} --appendonly yes
     ports:
       - "6379:6379"
-    command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-changeme}", "ping"]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -38,8 +38,8 @@ services:
     image: rabbitmq:3.12-management-alpine
     container_name: moviebooking-rabbitmq
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-changeme}
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -57,11 +57,15 @@ services:
       dockerfile: Dockerfile
     container_name: catalog-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/moviebooking
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
+      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-moviebooking}
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-changeme}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-changeme}
+      JWT_SECRET: ${JWT_SECRET}
+      SWAGGER_ENABLED: ${SWAGGER_ENABLED:-false}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
     ports:
       - "8081:8081"
     depends_on:
@@ -77,15 +81,21 @@ services:
       dockerfile: Dockerfile
     container_name: booking-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/moviebooking
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-      SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_RABBITMQ_PORT: 5672
-      SPRING_RABBITMQ_USERNAME: guest
-      SPRING_RABBITMQ_PASSWORD: guest
+      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-moviebooking}
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-changeme}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-changeme}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-changeme}
+      JWT_SECRET: ${JWT_SECRET}
+      PAYMENT_GATEWAY_URL: ${PAYMENT_GATEWAY_URL:-https://api.razorpay.com}
+      PAYMENT_WEBHOOK_SECRET: ${PAYMENT_WEBHOOK_SECRET}
+      SWAGGER_ENABLED: ${SWAGGER_ENABLED:-false}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
     ports:
       - "8082:8082"
     depends_on:
