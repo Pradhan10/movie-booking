@@ -6,6 +6,8 @@ import com.moviebooking.booking.event.PaymentSuccessEvent;
 import com.moviebooking.booking.model.Payment;
 import com.moviebooking.booking.repository.PaymentRepository;
 import com.moviebooking.common.enums.PaymentStatus;
+import com.moviebooking.common.logging.CorrelationIdHolder;
+import com.moviebooking.common.security.DataMaskingUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,8 +31,11 @@ public class PaymentService {
     
     @Transactional
     public PaymentResponse initiatePayment(PaymentRequest request) {
-        log.info("Initiating payment for booking: {}, amount: {}", 
-            request.getBookingId(), request.getAmount());
+        String correlationId = CorrelationIdHolder.get();
+        log.info("[{}] Initiating payment for booking: {}, amount: {}", 
+                correlationId,
+                request.getBookingId(), 
+                request.getAmount());
         
         Payment payment = Payment.builder()
             .bookingId(request.getBookingId())
@@ -55,10 +60,15 @@ public class PaymentService {
     
     @Transactional
     public void handleWebhook(String gatewayTxnId, String status, String response) {
-        log.info("Handling payment webhook - txnId: {}, status: {}", gatewayTxnId, status);
+        String correlationId = CorrelationIdHolder.get();
+        log.info("[{}] Handling payment webhook - txnId: {}, status: {}", 
+                correlationId,
+                DataMaskingUtil.maskGatewayTxnId(gatewayTxnId), 
+                status);
         
         Payment payment = paymentRepository.findByGatewayTxnId(gatewayTxnId)
-            .orElseThrow(() -> new RuntimeException("Payment not found for txn: " + gatewayTxnId));
+            .orElseThrow(() -> new RuntimeException("Payment not found for txn: " + 
+                    DataMaskingUtil.maskGatewayTxnId(gatewayTxnId)));
         
         if ("SUCCESS".equals(status)) {
             payment.markSuccess(gatewayTxnId, response);
@@ -85,17 +95,25 @@ public class PaymentService {
     }
     
     @Transactional
-    public PaymentResponse mockPaymentSuccess(Long paymentId) {
-        log.info("Mock payment success for payment: {}", paymentId);
+    public PaymentResponse mockPaymentSuccess(Long paymentId, Long authenticatedUserId) {
+        String correlationId = CorrelationIdHolder.get();
+        log.warn("[{}] MOCK PAYMENT SUCCESS CALLED - payment: {}, user: {}", 
+                correlationId, paymentId, DataMaskingUtil.maskUserId(authenticatedUserId));
         
         Payment payment = paymentRepository.findById(paymentId)
             .orElseThrow(() -> new RuntimeException("Payment not found: " + paymentId));
+        
+        // Verify payment belongs to a booking owned by authenticated user
+        Booking booking = bookingService.getBookingById(payment.getBookingId());
+        if (!booking.getUserId().equals(authenticatedUserId)) {
+            throw new SecurityException("Cannot process payment for another user's booking");
+        }
         
         String mockTxnId = "TXN_" + UUID.randomUUID().toString();
         payment.markSuccess(mockTxnId, "{\"status\": \"success\"}");
         payment = paymentRepository.save(payment);
         
-        bookingService.confirmBooking(payment.getBookingId(), payment.getId());
+        bookingService.confirmBooking(payment.getBookingId(), payment.getId(), authenticatedUserId);
         
         PaymentSuccessEvent event = PaymentSuccessEvent.builder()
             .paymentId(payment.getId())

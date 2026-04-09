@@ -14,6 +14,8 @@ import com.moviebooking.booking.repository.BookingRepository;
 import com.moviebooking.booking.repository.SeatRepository;
 import com.moviebooking.common.enums.BookingStatus;
 import com.moviebooking.common.enums.SeatStatus;
+import com.moviebooking.common.logging.CorrelationIdHolder;
+import com.moviebooking.common.security.DataMaskingUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,8 +46,13 @@ public class BookingService {
     public HoldSeatsResponse holdSeats(HoldSeatsRequest request) {
         String transactionId = UUID.randomUUID().toString();
         List<Long> seatIds = request.getSeatIds();
+        String correlationId = CorrelationIdHolder.get();
         
-        log.info("Attempting to hold seats: {} for session: {}", seatIds, request.getSessionId());
+        log.info("[{}] Attempting to hold {} seats for user: {}, show: {}", 
+                correlationId, 
+                seatIds.size(),
+                DataMaskingUtil.maskUserId(request.getUserId()),
+                request.getShowId());
         
         List<Seat> seatsToHold = seatRepository.findByIdsAndStatusForUpdate(seatIds, SeatStatus.AVAILABLE);
         
@@ -74,7 +81,11 @@ public class BookingService {
             
             seatLockService.holdSeats(request.getSessionId(), seatIds, request.getUserId(), holdUntil);
             
-            log.info("Successfully held {} seats for session: {}", seatsToHold.size(), request.getSessionId());
+            log.info("[{}] Successfully held {} seats for user: {}, expires: {}", 
+                    correlationId,
+                    seatsToHold.size(), 
+                    DataMaskingUtil.maskUserId(request.getUserId()),
+                    holdUntil);
             
             return HoldSeatsResponse.builder()
                 .sessionId(request.getSessionId())
@@ -89,8 +100,12 @@ public class BookingService {
     
     @Transactional
     public Booking createBooking(BookingRequest request) {
-        log.info("Creating booking for user: {}, show: {}, seats: {}", 
-            request.getUserId(), request.getShowId(), request.getSeatIds());
+        String correlationId = CorrelationIdHolder.get();
+        log.info("[{}] Creating booking for user: {}, show: {}, seatCount: {}", 
+                correlationId,
+                DataMaskingUtil.maskUserId(request.getUserId()), 
+                request.getShowId(), 
+                request.getSeatIds().size());
         
         Set<Long> heldSeats = seatLockService.getHeldSeats(request.getSessionId());
         if (!heldSeats.containsAll(request.getSeatIds())) {
@@ -138,20 +153,31 @@ public class BookingService {
         
         booking = bookingRepository.save(booking);
         
-        log.info("Booking created: {} with reference: {}", booking.getId(), bookingReference);
+        log.info("[{}] Booking created: {} with reference: {}", 
+                correlationId, booking.getId(), bookingReference);
         
         return booking;
     }
     
     @Transactional
-    public Booking confirmBooking(Long bookingId, Long paymentId) {
-        log.info("Confirming booking: {} with payment: {}", bookingId, paymentId);
+    public Booking confirmBooking(Long bookingId, Long paymentId, Long authenticatedUserId) {
+        String correlationId = CorrelationIdHolder.get();
+        log.info("[{}] Confirming booking: {} for user: {}, with payment: {}", 
+                correlationId, bookingId, DataMaskingUtil.maskUserId(authenticatedUserId), paymentId);
         
         Booking booking = bookingRepository.findById(bookingId)
             .orElseThrow(() -> new RuntimeException("Booking not found: " + bookingId));
         
+        // Authorization check: verify booking belongs to authenticated user
+        if (!booking.getUserId().equals(authenticatedUserId)) {
+            log.warn("[{}] User {} attempted to confirm booking {} owned by user {}", 
+                    correlationId, authenticatedUserId, bookingId, booking.getUserId());
+            throw new SecurityException("Cannot confirm another user's booking");
+        }
+        
         if (booking.getStatus() != BookingStatus.PENDING) {
-            log.warn("Booking {} already in status: {}", bookingId, booking.getStatus());
+            log.warn("[{}] Booking {} already in status: {}", 
+                    correlationId, bookingId, booking.getStatus());
             return booking;
         }
         
@@ -201,7 +227,10 @@ public class BookingService {
             
             eventPublisher.publishBookingConfirmed(event);
             
-            log.info("Booking confirmed: {}", bookingId);
+            log.info("[{}] Booking confirmed: {} for user: {}", 
+                    correlationId, 
+                    bookingId,
+                    DataMaskingUtil.maskUserId(booking.getUserId()));
             
             return booking;
         } finally {
@@ -210,11 +239,20 @@ public class BookingService {
     }
     
     @Transactional
-    public void cancelBooking(Long bookingId, String reason) {
-        log.info("Cancelling booking: {} - reason: {}", bookingId, reason);
+    public void cancelBooking(Long bookingId, Long authenticatedUserId, String reason) {
+        String correlationId = CorrelationIdHolder.get();
+        log.info("[{}] Cancelling booking: {} for user: {}, reason: {}", 
+                correlationId, bookingId, DataMaskingUtil.maskUserId(authenticatedUserId), reason);
         
         Booking booking = bookingRepository.findById(bookingId)
             .orElseThrow(() -> new RuntimeException("Booking not found: " + bookingId));
+        
+        // Authorization check: verify booking belongs to authenticated user
+        if (!booking.getUserId().equals(authenticatedUserId)) {
+            log.warn("[{}] User {} attempted to cancel booking {} owned by user {}", 
+                    correlationId, authenticatedUserId, bookingId, booking.getUserId());
+            throw new SecurityException("Cannot cancel another user's booking");
+        }
         
         if (booking.getStatus() == BookingStatus.CONFIRMED) {
             List<Long> seatIds = booking.getSeats().stream()
@@ -239,7 +277,18 @@ public class BookingService {
         
         eventPublisher.publishBookingCancelled(event);
         
-        log.info("Booking cancelled: {}", bookingId);
+        log.info("[{}] Booking cancelled: {} for user: {}", 
+                correlationId, 
+                bookingId,
+                DataMaskingUtil.maskUserId(booking.getUserId()));
+    }
+    
+    /**
+     * Get booking by ID (for internal use)
+     */
+    public Booking getBookingById(Long bookingId) {
+        return bookingRepository.findById(bookingId)
+            .orElseThrow(() -> new RuntimeException("Booking not found: " + bookingId));
     }
     
     private String generateBookingReference() {
